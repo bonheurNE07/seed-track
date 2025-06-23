@@ -7,10 +7,8 @@ export default function Layout() {
     <div className="flex flex-col min-h-screen">
       <Navbar />
       
-      <main className="flex-grow flex items-center justify-center px-4 py-6 sm:px-6 md:px-8 bg-white text-gray-900 dark:bg-[#212121] dark:text-gray-100 transition-colors duration-300">
-        <div className="w-full max-w-md">
-          <Outlet />
-        </div>
+      <main className="flex flex-grow items-center justify-center px-6 py-6 w-full md:px-8 lg:px-16 bg-white text-gray-900 dark:bg-[#212121] dark:text-gray-100 transition-colors duration-300">
+        <Outlet />
       </main>
       
       <Footer />

@@ -1,15 +1,15 @@
-import { useState } from 'react';
+import React, { useState, type FormEvent } from 'react';
 import { useNavigate } from 'react-router-dom';
 import Notification from '../components/Notification';
 
-export default function Registration() {
+const Registration: React.FC = () => {
   const [showNotice, setShowNotice] = useState(true);
   const [email, setEmail] = useState('');
   const [countryCode, setCountryCode] = useState('+250');
   const [phone, setPhone] = useState('');
   const navigate = useNavigate();
 
-  const handleSubmit = (e) => {
+  const handleSubmit = (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     const fullPhone = `${countryCode} ${phone}`;
     navigate('/confirmation', {
@@ -45,7 +45,10 @@ export default function Registration() {
       </div>
 
       {/* Notice Box */}
-      {showNotice && (<Notification message="We take privacy seriously. Your personal data is securely protected." />
+      {showNotice && (
+        <Notification 
+        message="We take privacy seriously. Your personal data is securely protected." 
+        onClose={() => setShowNotice(false)} />
       )}
 
       {/* Form */}
@@ -89,7 +92,7 @@ export default function Registration() {
             />
           </div>
         </div>
-
+        <hr className="border-t border-gray-300 dark:border-gray-600 my-4" />
         <button
           type="submit"
           className="w-full py-2 bg-blue-600 hover:bg-blue-700 text-white font-semibold rounded-md transition"
@@ -102,3 +105,4 @@ export default function Registration() {
 }
 
 
+export default Registration;

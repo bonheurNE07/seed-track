@@ -1,9 +1,9 @@
-import { useState, useEffect } from 'react';
+import React, { useState, useEffect, type FormEvent } from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';
 import { Repeat2 } from 'lucide-react';
 import Notification from '../components/Notification';
 
-export default function Confirmation() {
+const Confirmation: React.FC = () => {
   const [showNotice, setShowNotice] = useState(true);
   const [code, setCode] = useState('');
 
@@ -20,7 +20,7 @@ export default function Confirmation() {
     }
   }, [email, phone, navigate]);
 
-  const handleConfirm = (e) => {
+  const handleConfirm = (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     // Replace with real confirmation logic
     alert(`Confirming code "${code}" for email: ${email} and phone: ${phone}`);
@@ -57,7 +57,9 @@ export default function Confirmation() {
 
       {/* Notification */}
       {showNotice && (
-        <Notification message="We take privacy seriously. Your personal data is securely protected." />
+        <Notification 
+        message="We take privacy seriously. Your personal data is securely protected." 
+        onClose={() => setShowNotice(false)}/>
       )}
 
       {/* Form */}
@@ -108,6 +110,8 @@ export default function Confirmation() {
           </button>
         </div>
 
+        <hr className="border-t border-gray-300 dark:border-gray-600 my-4" />
+
         <button
           type="submit"
           className="w-full py-2 bg-blue-600 hover:bg-blue-700 text-white font-semibold rounded-md transition"
@@ -118,3 +122,5 @@ export default function Confirmation() {
     </div>
   );
 }
+
+export default Confirmation;

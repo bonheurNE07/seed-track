@@ -1,6 +1,6 @@
 import { Link, useLocation, useNavigate } from 'react-router-dom';
 import { Eye } from 'lucide-react';
-import { useEffect, useState } from 'react';
+import { useEffect, useState, type FormEvent } from 'react';
 
 export default function Login() {
   const [email, setEmail] = useState('');
@@ -9,6 +9,7 @@ export default function Login() {
   const isStrong = password.length >= 12;
 
   const location = useLocation();
+  const navigate = useNavigate()
 
   useEffect(() => {
     if (location.state) {
@@ -18,8 +19,9 @@ export default function Login() {
     }
   }, [location.state]);
 
-  const handleLogin = (e) => {
+  const handleLogin = (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
+    navigate("/")
   };
 
 
@@ -74,6 +76,7 @@ export default function Login() {
             </p>
           )}
         </div>
+        <hr className="border-t border-gray-300 dark:border-gray-600 my-4" />
 
         {/* Submit */}
         <button
