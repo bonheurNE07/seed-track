@@ -39,8 +39,15 @@ const SeedRecord:React.FC = () => {
       <section className="space-y-4">
         <h2 className="text-center text-lg font-semibold">FARMER IDENTITY</h2>
         <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-          <input type="date" placeholder="Date" className="input-style" />
-          <input type="date" placeholder="Birth date" className="input-style" />
+          <label className="flex flex-col text-sm text-gray-700 dark:text-gray-300">
+            Date
+            <input type="date" className="input-style" />
+          </label>
+
+          <label className="flex flex-col text-sm text-gray-700 dark:text-gray-300">
+            Birth Date
+            <input type="date" className="input-style" />
+          </label>
           <input type="text" placeholder="Names" className="input-style" />
           <input type="text" placeholder="Sex" className="input-style" />
           <input type="text" placeholder="National ID" className="input-style" />
