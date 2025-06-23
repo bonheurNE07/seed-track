@@ -21,7 +21,7 @@ export default function Login() {
 
   const handleLogin = (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    navigate("/")
+    navigate("/farmer-regist")
   };
 
 
