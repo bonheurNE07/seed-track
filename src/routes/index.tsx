@@ -8,6 +8,8 @@ import Confirmation from "../pages/Confirmation";
 import SetPassword from "../pages/SetPassword";
 import FarmerRegistration from "../pages/FarmerRegistration";
 import SeedRecord from "../pages/SeedRecord";
+import PrivateRoute from "@/routes/PrivateRoute";
+
 
 
 function AppRoutes() {
@@ -18,18 +20,32 @@ function AppRoutes() {
     <React.Suspense fallback={<Loading />}>
         <Routes>
           <Route path="/" element={<Layout />} >
-            <Route index element={<Home />}/>
-            <Route path="login" element={<Login />}/>
-            <Route path="register" element={<Register />}/>
-            <Route path="confirmation" element={<Confirmation />}/>
-            <Route path="setpassword" element={<SetPassword/>}/>
+          <Route index element={
+            <PrivateRoute>
+              <Home />
+            </PrivateRoute>
+          }/>
 
-            <Route path="farmer-regist" element={<FarmerRegistration />}/>
-            <Route path="seed-record" element={<SeedRecord />}/>
-          </Route>
+          <Route path="login" element={<Login />}/>
+          <Route path="register" element={<Register />}/>
+          <Route path="confirmation" element={<Confirmation />}/>
+          <Route path="setpassword" element={<SetPassword />}/>
 
-          {/* Catch-all 404 */}
-          <Route path="*" element={<NotFound />} />
+          <Route path="farmer-regist" element={
+            <PrivateRoute>
+              <FarmerRegistration />
+            </PrivateRoute>
+          }/>
+
+          <Route path="seed-record" element={
+            <PrivateRoute>
+              <SeedRecord />
+            </PrivateRoute>
+          }/>
+        </Route>
+
+        {/* Catch all 404 */}
+        <Route path="*" element={<NotFound />} />
         </Routes>
     </React.Suspense>
   )

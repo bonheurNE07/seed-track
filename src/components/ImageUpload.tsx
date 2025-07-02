@@ -36,7 +36,7 @@ const ImageUpload: React.FC<ImageUploadProps> = ({ onImageSelect }) => {
 
   return (
     <div className="w-full max-w-md mx-auto space-y-4 px-4">
-      <h1 className="text-center text-2xl font-bold mb-4">Upload or Capture an ID</h1>
+      <h1 className="text-center text-2xl font-bold mb-4">Upload or Capture you QR</h1>
       {/* Toggle Buttons */}
       <div className="flex w-full bg-gray-100 hover:bg-gray-200 rounded-full overflow-hidden dark:bg-gray-800 dark:hover:bg-gray-900 shadow-md">
         <button

@@ -23,7 +23,15 @@
     "noFallthroughCasesInSwitch": true,
     "noUncheckedSideEffectImports": true,
 
-    "types": ["react", "react-dom"]
+    "types": ["react", "react-dom"],
+
+    /* required for better reference */
+    "baseUrl": ".",
+    "paths": {
+      "@/*": [
+        "./src/*"
+      ]
+    }
   },
   "include": ["src"]
 }

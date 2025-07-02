@@ -1,23 +1,33 @@
 import React, { useState, type FormEvent } from 'react';
 import { useNavigate } from 'react-router-dom';
 import Notification from '../components/Notification';
+import { sendVerificationCode } from '@/services/register';
 
 const Registration: React.FC = () => {
   const [showNotice, setShowNotice] = useState(true);
+  const [showErrorNotice, setShowErrorNotice] = useState(false);
   const [email, setEmail] = useState('');
   const [countryCode, setCountryCode] = useState('+250');
   const [phone, setPhone] = useState('');
   const navigate = useNavigate();
 
-  const handleSubmit = (e: FormEvent<HTMLFormElement>) => {
+  const handleSubmit = async (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     const fullPhone = `${countryCode} ${phone}`;
-    navigate('/confirmation', {
+    try {
+      await sendVerificationCode(email, fullPhone);
+      navigate('/confirmation', {
       state: {
         email,
         phone: fullPhone,
       },
     });
+    }
+    catch (error) {
+      setShowErrorNotice(true);
+      console.error(error);
+    }
+    
   };
 
   return (
@@ -49,6 +59,11 @@ const Registration: React.FC = () => {
         <Notification 
         message="We take privacy seriously. Your personal data is securely protected." 
         onClose={() => setShowNotice(false)} />
+      )}
+      {showErrorNotice && (
+        <Notification 
+        message={`Failed to send verification code to ❌ ${email} email address.`} 
+        onClose={() => setShowErrorNotice(false)} />
       )}
 
       {/* Form */}

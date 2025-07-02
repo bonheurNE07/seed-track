@@ -2,28 +2,37 @@ import React, { useState, type FormEvent } from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';
 import { Eye } from 'lucide-react';
 import Notification from '../components/Notification';
+import { setPassword } from '@/services/register';
 
 interface LocationState {
   email?: string;
 }
 
-const SetPassword: React.FC = () => {
-  const [password, setPassword] = useState<string>('');
+const SetUpPassword: React.FC = () => {
+  const [UserPassword, setUserPassword] = useState<string>('');
+  const [Status, setStatus] = useState<string>('')
   const [show, setShow] = useState<boolean>(false);
-  const [showNotice, setShowNotice] = useState<boolean>(true);
+  const [showNotice, setShowNotice] = useState<boolean>(false);
+  const [showErrorNotice, setShowErrorNotice] = useState(false);
 
   const navigate = useNavigate();
   const location = useLocation();
   const state = location.state as LocationState;
   const email = state?.email || '';
 
-  const isStrong = password.length >= 12;
+  const isStrong = UserPassword.length >= 12;
 
-  const handleConfirm = (e: FormEvent<HTMLFormElement>) => {
+  const handleConfirm = async (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    navigate('/login', {
-      state: { email, password },
-    });
+    try {
+      const code_vrification_status = await setPassword(email, UserPassword);
+      await setStatus(code_vrification_status.message);
+      await setShowNotice(true);
+      navigate('/login', { state: { email } });
+    } catch (error) {
+      setShowErrorNotice(true);
+      console.error(error);
+    }
   };
 
   return (
@@ -51,8 +60,16 @@ const SetPassword: React.FC = () => {
         </div>
 
         {showNotice && (
-          <Notification message={`${email} ✔️ email address confirmed`} onClose={() => setShowNotice(false)} />
+          <Notification 
+          message={`✅ ${Status}`} 
+          onClose={() => setShowNotice(false)}/>
         )}
+        {showErrorNotice && (
+          <Notification 
+          message={`❌ ${email} Invalid Password.`} 
+          onClose={() => setShowErrorNotice(false)} />
+        )}
+        
 
         <form className="space-y-4" onSubmit={handleConfirm}>
           <div>
@@ -77,8 +94,8 @@ const SetPassword: React.FC = () => {
               <input
                 type={show ? 'text' : 'password'}
                 maxLength={24}
-                value={password}
-                onChange={(e) => setPassword(e.target.value)}
+                value={UserPassword}
+                onChange={(e) => setUserPassword(e.target.value)}
                 placeholder="Password"
                 className="w-full px-4 py-2 border border-gray-300 dark:border-gray-700 rounded-md bg-white dark:bg-gray-800 text-gray-900 dark:text-white focus:outline-none focus:ring-2 focus:ring-blue-500 pr-10"
               />
@@ -91,7 +108,7 @@ const SetPassword: React.FC = () => {
                 <Eye size={18} />
               </button>
             </div>
-            {password && (
+            {UserPassword && (
               <p className={`text-sm mt-1 ${isStrong ? 'text-green-600' : 'text-red-500'}`}>
                 {isStrong ? '✓ Good password' : '✗ Too short'}
               </p>
@@ -112,4 +129,4 @@ const SetPassword: React.FC = () => {
   );
 };
 
-export default SetPassword;
+export default SetUpPassword;

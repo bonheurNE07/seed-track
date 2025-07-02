@@ -1,27 +1,38 @@
+import { useEffect, useState, type FormEvent } from 'react';
+import { useAuth } from '@/context/AuthContext';
 import { Link, useLocation, useNavigate } from 'react-router-dom';
 import { Eye } from 'lucide-react';
-import { useEffect, useState, type FormEvent } from 'react';
+import Notification from '@/components/Notification';
+
 
 export default function Login() {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
+  const [showErrorNotice, setShowErrorNotice] = useState(false);
   const [show, setShow] = useState(false);
   const isStrong = password.length >= 12;
 
+  const { login } = useAuth();
   const location = useLocation();
   const navigate = useNavigate()
 
   useEffect(() => {
     if (location.state) {
-      const { email: locEmail, password: locPassword } = location.state;
+      const { email: locEmail, } = location.state;
       if (locEmail) setEmail(locEmail);
-      if (locPassword) setPassword(locPassword);
     }
   }, [location.state]);
 
-  const handleLogin = (e: FormEvent<HTMLFormElement>) => {
+  const handleLogin = async(e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    navigate("/farmer-regist")
+    try {
+      await login(email, password);
+      navigate('/');
+    } catch (err) {
+      setShowErrorNotice(true);
+      console.error(err);
+    }
+    // navigate("/farmer-regist")
   };
 
 
@@ -33,6 +44,12 @@ export default function Login() {
           Fill in the login form to use the application
         </p>
       </div>
+
+      {showErrorNotice && (
+        <Notification 
+          message={`❌ ${email} Invalid User Email address or Password.`} 
+          onClose={() => setShowErrorNotice(false)} />
+      )}
 
       <form className="space-y-4" onSubmit={handleLogin}>
         <div>

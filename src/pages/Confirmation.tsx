@@ -2,9 +2,14 @@ import React, { useState, useEffect, type FormEvent } from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';
 import { Repeat2 } from 'lucide-react';
 import Notification from '../components/Notification';
+import { sendVerificationCode, verifyCode } from '@/services/register';
 
 const Confirmation: React.FC = () => {
-  const [showNotice, setShowNotice] = useState(true);
+  const [showNotice, setShowNotice] = useState(false);
+  const [showErrorNotice, setShowErrorNotice] = useState(false);
+  const [showResentStatus, setShowResentStatus] = useState(false);
+  const [sentStatusMessage, setSentStatusMessage] = useState<string>('');
+  const [codeStatus, setCodeStatus] = useState('');
   const [code, setCode] = useState('');
 
   const location = useLocation();
@@ -20,16 +25,27 @@ const Confirmation: React.FC = () => {
     }
   }, [email, phone, navigate]);
 
-  const handleConfirm = (e: FormEvent<HTMLFormElement>) => {
+  const handleConfirm = async (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    // Replace with real confirmation logic
-    alert(`Confirming code "${code}" for email: ${email} and phone: ${phone}`);
-    navigate('/setpassword',{
-      state: {
-        email,
-      },
-    });
-    // navigate("/success"); // Example redirection after confirmation
+    try {
+      await verifyCode(email.trim(), code.trim());
+      navigate('/setpassword',{ state: { email } });
+    }
+    catch (error) {
+      setShowErrorNotice(true);
+      console.error(error);
+    }
+  };
+
+  const handleResent = async () => {
+    try {
+      const sent_status = await sendVerificationCode(email, phone);
+      await setSentStatusMessage(sent_status.message);
+      await setShowResentStatus(true)
+    } catch (error) {
+      setShowErrorNotice(true);
+      console.error(error);
+    }
   };
 
   return (
@@ -58,9 +74,20 @@ const Confirmation: React.FC = () => {
       {/* Notification */}
       {showNotice && (
         <Notification 
-        message="We take privacy seriously. Your personal data is securely protected." 
+        message={`✅ ${codeStatus}`} 
         onClose={() => setShowNotice(false)}/>
       )}
+      {showErrorNotice && (
+        <Notification 
+        message={`❌ ${code} Invalid or expired code.\nResend.`} 
+        onClose={() => setShowErrorNotice(false)} />
+      )}
+      {showResentStatus && (
+        <Notification 
+        message={`✅ ${sentStatusMessage}`} 
+        onClose={() => setShowNotice(false)}/>
+      )}
+
 
       {/* Form */}
       <form className="space-y-4" onSubmit={handleConfirm}>
@@ -104,7 +131,7 @@ const Confirmation: React.FC = () => {
           <button
             type="button"
             className="flex items-center text-blue-600 hover:text-blue-800 mt-2 text-sm font-medium"
-            onClick={() => alert('Resend code logic')}
+            onClick={handleResent}
           >
             <span className='flex items-center'><Repeat2 size={18} /><span className='mx-1'>Send again</span></span>
           </button>

@@ -1,16 +1,20 @@
 import { Link, useNavigate } from 'react-router-dom';
 import ArrowLeft from '../assets/ArrowLeft.svg';
 import Icon from '../assets/Icon.svg';
+import { useAuth } from "@/context/AuthContext";
+
 
 const Navbar = () => {
   const navigate = useNavigate();
+  const { logout } = useAuth();
+  const { isAuthenticated } = useAuth()
 
   // Example authentication state (replace with real auth logic)
-  const isAuthenticated = false;
+  // const isAuthenticated = true;
 
   return (
-    <nav className="sticky top-0 z-50 w-full flex items-center justify-between px-4 sm:px-6 py-3 
-  bg-white/30 dark:bg-[#202124]/98 backdrop-blur-md 
+    <nav className="fixed top-0 z-50 w-full flex items-center justify-between px-4 sm:px-6 py-3 
+  bg-white/30 dark:bg-[#202124]/30 backdrop-blur-md 
   shadow-md  transition-all duration-300">
       
       {/* Logo (Home link) */}
@@ -24,7 +28,22 @@ const Navbar = () => {
       {/* Navigation Items */}
       <div className="flex items-center gap-4">
         {/* Auth Links */}
-        {!isAuthenticated ? (
+        {isAuthenticated ? (
+          <>
+            <Link
+              to="/profile"
+              className="text-sm font-medium text-gray-700 hover:text-gray-900 dark:text-gray-300 dark:hover:text-white transition"
+            >
+              Profile
+            </Link>
+            <button
+              onClick={logout}
+              className="text-sm font-medium text-red-600 hover:text-red-500 transition"
+            >
+              Logout
+            </button>
+          </>
+        ) : (
           <>
             <Link
               to="/login"
@@ -38,21 +57,6 @@ const Navbar = () => {
             >
               Register
             </Link>
-          </>
-        ) : (
-          <>
-            <Link
-              to="/profile"
-              className="text-sm font-medium text-gray-700 hover:text-gray-900 dark:text-gray-300 dark:hover:text-white transition"
-            >
-              Profile
-            </Link>
-            <button
-              onClick={() => console.log('Logout')}
-              className="text-sm font-medium text-red-600 hover:text-red-500 transition"
-            >
-              Logout
-            </button>
           </>
         )}
 
