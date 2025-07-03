@@ -10,7 +10,6 @@ import { Button } from "../ui/button";
 import {
   CalendarDays,
   Phone,
-  User,
   MapPin,
   BadgeInfo,
   BadgePlus,

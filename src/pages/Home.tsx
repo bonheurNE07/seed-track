@@ -17,6 +17,8 @@ import {
   fetchDistributionCalendar
 } from '@/services/dashboard';
 
+import { toast } from 'react-toastify';
+
 export default function Home() {
   const [stats, setStats] = useState({
     total_farmers: 0,
@@ -113,7 +115,15 @@ export default function Home() {
               </div>
               <div className="space-x-2">
                 <FarmerViewModal farmer={farmer} />
-                <FarmerEditModal farmer={farmer} />
+                <FarmerEditModal
+                  farmer={farmer}
+                  onUpdate={(updatedFarmer) => {
+                    setRecentFarmers((prev) =>
+                      prev.map((f) => (f.id === updatedFarmer.id ? updatedFarmer : f))
+                    );
+                    toast.success("Farmer updated successfully ✅");
+                  }}
+                />
               </div>
             </div>
           ))}
