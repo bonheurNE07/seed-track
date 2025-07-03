@@ -5,6 +5,10 @@ import { Calendar } from '@/components/ui/calendar';
 import { Link } from 'react-router-dom';
 import { Users, Leaf, Clock, CheckCircle } from 'lucide-react';
 import { format } from 'date-fns';
+import FarmerViewModal from '@/components/dashboard/FarmerViewModal';
+import ReportViewModal from '@/components/dashboard/ReportViewModal';
+import { downloadDistributionReport } from '@/services/dashboard';
+
 
 import {
   fetchDashboardStats,
@@ -108,7 +112,7 @@ export default function Home() {
                 </p>
               </div>
               <div className="space-x-2">
-                <Button size="sm" variant="outline">View</Button>
+                <FarmerViewModal farmer={farmer} />
                 <Button size="sm" variant="secondary">Edit</Button>
               </div>
             </div>
@@ -131,7 +135,17 @@ export default function Home() {
                   <li key={idx}>{item.species_name}: {item.quantity}kg</li>
                 ))}
               </ul>
-              <Button size="sm" variant="outline" className="mt-2">View Report</Button>
+              <div className="flex flex-wrap gap-2 mt-4">
+                <ReportViewModal report={dist} />
+                <Button
+                  size="sm"
+                  variant="ghost"
+                  className="text-blue-600 dark:text-blue-400 hover:underline"
+                  onClick={() => downloadDistributionReport(dist.id)}
+                >
+                  Download PDF
+                </Button>
+              </div>
             </div>
           ))}
         </div>
