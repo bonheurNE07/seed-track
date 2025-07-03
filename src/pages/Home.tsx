@@ -8,7 +8,7 @@ import { format } from 'date-fns';
 import FarmerViewModal from '@/components/dashboard/FarmerViewModal';
 import ReportViewModal from '@/components/dashboard/ReportViewModal';
 import { downloadDistributionReport } from '@/services/dashboard';
-
+import FarmerEditModal from '@/components/dashboard/FarmerEditModal';
 
 import {
   fetchDashboardStats,
@@ -113,7 +113,7 @@ export default function Home() {
               </div>
               <div className="space-x-2">
                 <FarmerViewModal farmer={farmer} />
-                <Button size="sm" variant="secondary">Edit</Button>
+                <FarmerEditModal farmer={farmer} />
               </div>
             </div>
           ))}

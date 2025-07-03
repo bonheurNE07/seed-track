@@ -42,3 +42,9 @@ export const downloadDistributionReport = async (distributionId: number) => {
   link.remove();
   window.URL.revokeObjectURL(url);
 };
+
+// PUT /api/farmers/:id/
+export const updateFarmer = async (id: number, data: any) => {
+  const res = await api.put(`/farmers/${id}/`, data);
+  return res.data;
+};
