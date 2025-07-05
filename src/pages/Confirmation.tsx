@@ -21,7 +21,7 @@ const Confirmation: React.FC = () => {
   // Redirect if state is missing
   useEffect(() => {
     if (!email || !phone) {
-      navigate('/registration'); // go back to registration if accessed directly
+      navigate('/registration'); 
     }
   }, [email, phone, navigate]);
 
