@@ -17,7 +17,7 @@ import {
 } from "lucide-react";
 import { format } from "date-fns";
 
-interface Farmer {
+export interface Farmer {
   full_name: string;
   national_id: string;
   phone_number: string;

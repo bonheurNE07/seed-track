@@ -8,7 +8,9 @@ import Confirmation from "../pages/Confirmation";
 import SetPassword from "../pages/SetPassword";
 import FarmerRegistration from "../pages/FarmerRegistration";
 import SeedRecord from "../pages/SeedRecord";
-import PrivateRoute from "@/routes/PrivateRoute";
+import ViewFarmers from "../pages/ViewFarmers";
+import ManageSpecies from "../pages/ManageSpecies";
+import PrivateRoute from "@/routes/PrivateRoute"; 
 
 
 
@@ -40,6 +42,17 @@ function AppRoutes() {
           <Route path="seed-record" element={
             <PrivateRoute>
               <SeedRecord />
+            </PrivateRoute>
+          }/> 
+
+          <Route path="farmers" element={
+            <PrivateRoute>
+              <ViewFarmers />
+            </PrivateRoute>
+          }/>
+          <Route path="species" element={
+            <PrivateRoute>
+              <ManageSpecies />
             </PrivateRoute>
           }/>
         </Route>

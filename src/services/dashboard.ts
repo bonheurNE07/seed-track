@@ -19,6 +19,13 @@ export const fetchRecentDistributions = async () => {
   return res.data;
 };
 
+// Distributions
+export const fetchAgentDistributionChart = async () => {
+  const res = await api.get('/dashboard/agent-distribution-chart/');
+  return res.data; 
+};
+
+
 // Calendar View
 export const fetchDistributionCalendar = async (month: string) => {
   const res = await api.get(`/dashboard/distribution-calendar/?month=${month}`);
@@ -46,5 +53,11 @@ export const downloadDistributionReport = async (distributionId: number) => {
 // PUT /api/farmers/:id/
 export const updateFarmer = async (id: number, data: any) => {
   const res = await api.put(`/farmers/${id}/`, data);
+  return res.data; 
+};
+
+export const fetchFarmer = async (id: number, data: any) => {
+  const res = await api.put(`/farmers/${id}/`, data);
   return res.data;
 };
+
